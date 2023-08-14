@@ -1,9 +1,8 @@
-package com.gian.quiz_app.service;
+package com.gian.quiz_app.controller;
 
-import com.gian.quiz_app.controller.QuestionService;
+import com.gian.quiz_app.service.QuestionService;
 import com.gian.quiz_app.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("question")
+@CrossOrigin(origins = "*")
 public class QuestionController {
     @Autowired
     QuestionService questionService;
@@ -21,13 +21,17 @@ public class QuestionController {
     }
 
     @GetMapping("category/{category}")
-    public List<Question> getQuestionsByCategory(@PathVariable String category) {
+    public ResponseEntity<List<Question>> getQuestionsByCategory(@PathVariable String category) {
         return questionService.getQuestionsByCategory(category);
     }
 
     @PostMapping("add")
-    public String addQuestion(@RequestBody Question question) {
+    public ResponseEntity<String> addQuestion(@RequestBody Question question) {
         return questionService.addQuestion(question);
     }
 
+    @PostMapping("delete")
+    public void deleteQuestion(@RequestBody Question question) {
+        questionService.deleteQuestion(question);
+    }
 }
